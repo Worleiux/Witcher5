@@ -66,6 +66,11 @@ public class Window {
             throw new IllegalStateException("Bruh no window :(");
         }
 
+        glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback); //forward position to this func
+        glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
+        glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
+        glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
+
         glfwMakeContextCurrent(glfwWindow);
         glfwSwapInterval(1); //vsync
         glfwShowWindow(glfwWindow);
@@ -77,8 +82,16 @@ public class Window {
         while (!glfwWindowShouldClose(glfwWindow)) {
             glfwPollEvents();
 
-            glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+
+
+            if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
+                glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+                glClear(GL_COLOR_BUFFER_BIT);
+            } else {
+                glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+                glClear(GL_COLOR_BUFFER_BIT);
+            }
+
             glfwSwapBuffers(glfwWindow);
         }
     }
